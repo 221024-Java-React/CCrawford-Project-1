@@ -1,1 +1,1 @@
-# README.md demo assignment
+# Project 1 & Labs
