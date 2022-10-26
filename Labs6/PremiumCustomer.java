@@ -22,7 +22,7 @@ public class PremiumCustomer extends Customer implements Premium {
     @Override
     public void buy() {
         this.items = "";
-        if((this.balance = this.balance - this.discountPrice(this.cartCost)) < 0){
+        if((this.balance - this.discountPrice(this.cartCost)) < 0){
             throw new OverBalanceException("Not enough money");
         } else {
             this.balance = this.balance - this.discountPrice(this.cartCost);

@@ -12,7 +12,7 @@ public class Lab7 {
         try {
             jill.buy();
         } catch (OverBalanceException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
         System.out.println(jill.toString());
