@@ -1,4 +1,6 @@
-package Labs69;
+package Labs6;
+
+import Labs7.OverBalanceException;
 
 public class PremiumCustomer extends Customer implements Premium {
 
@@ -20,7 +22,11 @@ public class PremiumCustomer extends Customer implements Premium {
     @Override
     public void buy() {
         this.items = "";
-        this.balance = this.balance - this.discountPrice(this.cartCost);
+        if((this.balance = this.balance - this.discountPrice(this.cartCost)) < 0){
+            throw new OverBalanceException("Not enough money");
+        } else {
+            this.balance = this.balance - this.discountPrice(this.cartCost);
+        }
         this.cartCost = 0.0;
     }
 
