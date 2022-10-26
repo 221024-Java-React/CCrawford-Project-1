@@ -1,4 +1,4 @@
-package Labs;
+package Labs15;
 
 import java.util.Scanner;
 
