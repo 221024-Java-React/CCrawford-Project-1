@@ -9,6 +9,4 @@ public class Lab8 {
         }
         return newWord.toString();
     }
-
-    // Missing JUnit
 }
