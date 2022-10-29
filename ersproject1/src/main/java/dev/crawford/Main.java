@@ -24,6 +24,8 @@ public class Main {
 
         app.get("/employees/<email>", EmployeeController.getEmployeeByEmail);
 
+        app.put("/employee/<email>", EmployeeController.updateEmployee);
+
 
         // DELETE ALL ------ NOT FOR PRODUCTION!!!
         app.delete("/employees", EmployeeController.deleteAllEmployees);

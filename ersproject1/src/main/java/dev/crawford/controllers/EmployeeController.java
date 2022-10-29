@@ -24,7 +24,6 @@ public final class EmployeeController {
 
     // Create Employee Using Form-Encoded
     public static final Handler createFormEmployee = ctx -> {
-        System.out.println(ctx.body());
         employeeService.createFormEmployee(ctx);
     };
 
@@ -36,6 +35,11 @@ public final class EmployeeController {
     //Get Employee by Unique value of Email
     public static final Handler getEmployeeByEmail = ctx -> {
         ctx.json(employeeService.getEmployeeByEmail(ctx.pathParam("email")));
+    };
+
+    // Put Update Employee
+    public static final Handler updateEmployee = ctx -> {
+        employeeService.updateEmployee(ctx.pathParam("email"), ctx);
     };
 
     // DELETE ALL ------ NOT FOR PRODUCTION!!!

@@ -83,6 +83,23 @@ public class EmployeeRepository {
         return Collections.emptyList();
     }
 
+    // Update Employee Information -- Does not allow changing of email
+    public void updateEmployee(Employee updateEmployee){
+        String sql = "update employees set first_name = ?, last_name = ?, email = ?, passwrd = ?, role = ? where email = ?";
+        try(Connection conn = cu.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, updateEmployee.getFirstName());
+            ps.setString(2, updateEmployee.getLastName());
+            ps.setString(3, updateEmployee.getEmail());
+            ps.setString(4, updateEmployee.getPassword());
+            ps.setString(5, updateEmployee.getRole().toString());
+            ps.setString(6, updateEmployee.getEmail());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 

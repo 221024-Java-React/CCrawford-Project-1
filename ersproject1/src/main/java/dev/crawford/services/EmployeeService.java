@@ -100,6 +100,24 @@ public class EmployeeService {
         }
     }
 
+    public void updateEmployee(String email, Context ctx){
+        if(employeeRepository.getByEmail(email) != null){
+            Employee newEmployee;
+            try {
+                newEmployee = obj.readValue(ctx.body(), Employee.class);
+                newEmployee.setEmail(email);
+                System.out.println(newEmployee.toString());
+                employeeRepository.updateEmployee(newEmployee);
+            } catch (JsonMappingException e) {
+                e.printStackTrace();
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("User Not Found");
+        }
+    }
+
     // DELETE ALL ------ NOT FOR PRODUCTION!!!
     public void deleteAll() {
         System.out.println("All Employees Deleted");
