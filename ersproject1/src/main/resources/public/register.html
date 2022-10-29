@@ -10,7 +10,7 @@
 <body>
     
     <!--Form to Register New User-->
-    <form id="registerForm">
+    <form method="post" action="formregister" id="registerForm">
         <div class="container">
             <h1 class="header"><strong>Register</strong></h1>
             <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
@@ -28,30 +28,30 @@
     </form>
 
     <script>
+        // NO LONG NEEDED -------------------------------- EmployeeService handles parsing of form-encoded
+        // const form = document.getElementById("registerForm");
 
-        const form = document.getElementById("registerForm");
+        // form.addEventListener("submit", (e) => {
+        //     e.preventDefault();
 
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
+        //     let data = `{
+        //         "id": 0,
+        //         "firstName": "${document.getElementById('firstName').value}",
+        //         "lastName": "${document.getElementById('lastName').value}",
+        //         "email": "${document.getElementById('email').value}",
+        //         "password": "${document.getElementById('password').value}",
+        //         "role": "${
+        //             document.getElementById('employeeRole').checked === true ? 'EMPLOYEE' : 'MANAGER'
+        //         }"
+        //     }`;
 
-            let data = `{
-                "id": 0,
-                "firstName": "${document.getElementById('firstName').value}",
-                "lastName": "${document.getElementById('lastName').value}",
-                "email": "${document.getElementById('email').value}",
-                "password": "${document.getElementById('password').value}",
-                "role": "${
-                    document.getElementById('employeeRole').checked === true ? 'EMPLOYEE' : 'MANAGER'
-                }"
-            }`;
+        //     let xhr = new XMLHttpRequest();
+        //     xhr.open("POST", "register");
+        //     xhr.setRequestHeader("Accept", "application/json");
+        //     xhr.setRequestHeader("Content-Type", "application/json");
 
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", "register");
-            xhr.setRequestHeader("Accept", "application/json");
-            xhr.setRequestHeader("Content-Type", "application/json");
-
-            xhr.send(data);
-        });
+        //     xhr.send(data);
+        // });
     </script>
 
 </body>

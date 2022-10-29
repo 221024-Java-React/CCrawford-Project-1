@@ -59,9 +59,6 @@ public class EmployeeService {
             String value = URLDecoder.decode(fields[1], "UTF-8");
 
             switch(name) {
-                case "id": 
-                    newEmployee.setId(Integer.parseInt(value));
-                    break;
                 case "firstName": 
                     newEmployee.setFirstName(value);
                     break;
@@ -74,7 +71,7 @@ public class EmployeeService {
                 case "password": 
                     newEmployee.setPassword(value);
                     break;
-                case "role": 
+                case "chooseRole": 
                     newEmployee.setRole(EmployeeRole.valueOf(value));
                     break;
                 default:
@@ -82,6 +79,8 @@ public class EmployeeService {
             }
         }
         if(getEmployeeByEmail(newEmployee.getEmail()) == null) {
+            newEmployee.setId(0);
+            System.out.println(newEmployee.toString());
             employeeRepository.create(newEmployee);
             System.out.println("Employee Created");
         } else {
@@ -101,6 +100,7 @@ public class EmployeeService {
         }
     }
 
+    // DELETE ALL ------ NOT FOR PRODUCTION!!!
     public void deleteAll() {
         System.out.println("All Employees Deleted");
         employeeRepository.deleteAll();

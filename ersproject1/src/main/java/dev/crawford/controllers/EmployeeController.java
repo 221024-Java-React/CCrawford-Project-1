@@ -10,7 +10,7 @@ public final class EmployeeController {
 
     
     public static final Handler hello = ctx -> {
-        System.out.println("hello");
+        ctx.redirect("/index.html");
     };
 
     public static final Handler before = ctx -> {
@@ -24,6 +24,7 @@ public final class EmployeeController {
 
     // Create Employee Using Form-Encoded
     public static final Handler createFormEmployee = ctx -> {
+        System.out.println(ctx.body());
         employeeService.createFormEmployee(ctx);
     };
 
