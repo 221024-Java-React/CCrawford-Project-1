@@ -92,6 +92,4 @@ public class Employee {
                 + ", password=" + password + ", role=" + role + ", reimbursements=" + Arrays.toString(reimbursements)
                 + "]";
     }
-
-    
 }

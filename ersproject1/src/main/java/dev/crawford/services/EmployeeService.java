@@ -29,7 +29,7 @@ public class EmployeeService {
     }
 
     // Login through JSON & Form-Encoded
-    public boolean login(Context ctx) throws UnsupportedEncodingException {
+    public boolean login(Context ctx){
         Employee newEmployee;
         try {
             newEmployee = obj.readValue(ctx.body(), Employee.class);
@@ -59,51 +59,57 @@ public class EmployeeService {
     }
 
     // Create Employee through JSON/Object Mapper
-    public void createEmployee(Context ctx) throws UnsupportedEncodingException {
+    public void createEmployee(Context ctx) {
         Employee newEmployee;
         try {
             newEmployee = obj.readValue(ctx.body(), Employee.class);
             if(getEmployeeByEmail(newEmployee.getEmail()) == null) {
                 employeeRepository.create(newEmployee);
+                ctx.status(201);
             }
         } catch (Exception e) {
             newEmployee = convertFormEmployee(ctx);
             if(getEmployeeByEmail(newEmployee.getEmail()) == null) {
                 newEmployee.setId(0);
                 employeeRepository.create(newEmployee);
+                ctx.status(201);
             }
         }
     }
 
     // Convert Form-Encoded to Employee Object
-    public Employee convertFormEmployee(Context ctx) throws UnsupportedEncodingException{
+    public Employee convertFormEmployee(Context ctx){
         String line = ctx.body();
         Employee newEmployee = new Employee();
 
         String[] pairs = line.split("\\&");
         for (int i = 0; i < pairs.length; i++) {
             String[] fields = pairs[i].split("=");
-            String name = URLDecoder.decode(fields[0], "UTF-8");
-            String value = URLDecoder.decode(fields[1], "UTF-8");
-
-            switch(name) {
-                case "firstName": 
-                    newEmployee.setFirstName(value);
-                    break;
-                case "lastName": 
-                    newEmployee.setLastName(value);
-                    break;
-                case "email": 
-                    newEmployee.setEmail(value);
-                    break;
-                case "password": 
-                    newEmployee.setPassword(value);
-                    break;
-                case "role": 
-                    newEmployee.setRole(EmployeeRole.valueOf(value));
-                    break;
-                default:
-                    break;
+            String name;
+            try {
+                name = URLDecoder.decode(fields[0], "UTF-8");
+                String value = URLDecoder.decode(fields[1], "UTF-8");
+                switch(name) {
+                    case "firstName": 
+                        newEmployee.setFirstName(value);
+                        break;
+                    case "lastName": 
+                        newEmployee.setLastName(value);
+                        break;
+                    case "email": 
+                        newEmployee.setEmail(value);
+                        break;
+                    case "password": 
+                        newEmployee.setPassword(value);
+                        break;
+                    case "role": 
+                        newEmployee.setRole(EmployeeRole.valueOf(value));
+                        break;
+                    default:
+                        break;
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
         return newEmployee;
