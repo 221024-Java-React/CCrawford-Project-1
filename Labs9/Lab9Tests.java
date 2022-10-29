@@ -13,21 +13,21 @@ public class Lab9Tests {
     
     @Test
     public void positiveTestOne(){
-        assertArrayEquals(new Lab9().calculateBonuses(arrayOne), bonusesOne);
+        assertArrayEquals(bonusesOne, new Lab9().calculateBonuses(arrayOne));
     }
 
     @Test
     public void positiveTestTwo(){
-        assertArrayEquals(new Lab9().calculateBonuses(arrayTwo), bonusesTwo);
+        assertArrayEquals(bonusesTwo, new Lab9().calculateBonuses(arrayTwo));
     }
 
     @Test
     public void negativeTestOne(){
-        assertArrayEquals(new Lab9().calculateBonuses(arrayOne), bonusesTwo);
+        assertArrayEquals(bonusesTwo, new Lab9().calculateBonuses(arrayOne));
     }
 
     @Test
     public void negativeTestTwo(){
-        assertArrayEquals(new Lab9().calculateBonuses(arrayTwo), bonusesOne);
+        assertArrayEquals(bonusesOne, new Lab9().calculateBonuses(arrayTwo));
     }
 }

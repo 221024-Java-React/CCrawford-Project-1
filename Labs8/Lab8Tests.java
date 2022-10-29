@@ -8,21 +8,21 @@ public class Lab8Tests {
     
     @Test
     public void positiveTestOne(){
-        assertEquals(new Lab8().reverse("Chicken"), "nekcihC");
+        assertEquals("nekcihC", new Lab8().reverse("Chicken"));
     }
 
     @Test
     public void positiveTestTwo(){
-        assertEquals(new Lab8().reverse("Car go Vroom"), "moorV og raC");
+        assertEquals("moorV og raC", new Lab8().reverse("Car go Vroom"));
     }
 
     @Test
     public void negativeTestOne(){
-        assertEquals(new Lab8().reverse("Chicken"), "Chicken");
+        assertEquals("Chicken", new Lab8().reverse("Chicken"));
     }
 
     @Test
     public void negativeTestTwo(){
-        assertEquals(new Lab8().reverse("Car go Vroom"), "Car go Vroom");
+        assertEquals("Car go Vroom", new Lab8().reverse("Car go Vroom"));
     }
 }

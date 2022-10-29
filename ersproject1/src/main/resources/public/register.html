@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/styles.css"/>
+    <title>ERS/Register</title>
+</head>
+<body>
+    
+    <!--Form to Register New User-->
+    <form id="registerForm">
+        <div class="container">
+            <h1 class="header"><strong>Register</strong></h1>
+            <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+            <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <br>
+            <input type="radio" id="employeeRole" value="EMPLOYEE" name="chooseRole" checked="checked">
+            <label for="employeeRole">Employee</label>
+            <input type="radio" id="managerRole" value="MANAGER" name="chooseRole">
+            <label for="managerRole">Manager</label>
+            <br>
+            <button type="submit">Button</button>
+        </div>
+    </form>
+
+    <script>
+
+        const form = document.getElementById("registerForm");
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            let data = `{
+                "id": 0,
+                "firstName": "${document.getElementById('firstName').value}",
+                "lastName": "${document.getElementById('lastName').value}",
+                "email": "${document.getElementById('email').value}",
+                "password": "${document.getElementById('password').value}",
+                "role": "${
+                    document.getElementById('employeeRole').checked === true ? 'EMPLOYEE' : 'MANAGER'
+                }"
+            }`;
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "register");
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.send(data);
+        });
+    </script>
+
+</body>
+</html>
