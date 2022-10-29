@@ -17,15 +17,18 @@ public final class EmployeeController {
         System.out.println("Before all requests");
     };
 
-    // Create Employee Using JSON
+    public static final Handler login = ctx -> {
+        if(employeeService.login(ctx)){
+            ctx.html("Login Success");
+        } else {
+            ctx.html("Login Failed");
+        }
+    };
+
+    // Create Employee Using JSON or Form-Encoded
     public static final Handler createEmployee = ctx -> {
         employeeService.createEmployee(ctx);
     };
-
-    // Create Employee Using Form-Encoded
-    // public static final Handler createFormEmployee = ctx -> {
-    //     employeeService.createFormEmployee(ctx);
-    // };
 
     // Get all Employees
     public static final Handler getAllEmployees = ctx -> {

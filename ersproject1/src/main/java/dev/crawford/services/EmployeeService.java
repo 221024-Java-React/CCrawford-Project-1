@@ -28,6 +28,30 @@ public class EmployeeService {
         LoggingUtil.getLogger().warn("This is a warning");
     }
 
+    // Login through JSON
+    public boolean login(Context ctx) {
+        Employee newEmployee;
+        try {
+            newEmployee = obj.readValue(ctx.body(), Employee.class);
+            if(getEmployeeByEmail(newEmployee.getEmail()) != null) {
+                Employee dbEmployee = getEmployeeByEmail(newEmployee.getEmail());
+                if(newEmployee.getPassword().equals(dbEmployee.getPassword())){
+                    System.out.println("Email & Password Correct");
+                    return true;
+                }
+            } else {
+                System.out.println("Email or Password Incorrect");
+                ctx.status(401);
+                return false;
+            }
+        } catch (Exception e) {
+
+        }
+        System.out.println("Email or Password Incorrect");
+        ctx.status(401);
+        return false;
+    }
+
     // Create Employee through JSON/Object Mapper
     public void createEmployee(Context ctx) throws UnsupportedEncodingException {
         Employee newEmployee;
