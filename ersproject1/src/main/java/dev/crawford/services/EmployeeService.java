@@ -28,26 +28,32 @@ public class EmployeeService {
         LoggingUtil.getLogger().warn("This is a warning");
     }
 
-    // Login through JSON
-    public boolean login(Context ctx) {
+    // Login through JSON & Form-Encoded
+    public boolean login(Context ctx) throws UnsupportedEncodingException {
         Employee newEmployee;
         try {
             newEmployee = obj.readValue(ctx.body(), Employee.class);
             if(getEmployeeByEmail(newEmployee.getEmail()) != null) {
                 Employee dbEmployee = getEmployeeByEmail(newEmployee.getEmail());
                 if(newEmployee.getPassword().equals(dbEmployee.getPassword())){
-                    System.out.println("Email & Password Correct");
                     return true;
                 }
             } else {
-                System.out.println("Email or Password Incorrect");
                 ctx.status(401);
                 return false;
             }
         } catch (Exception e) {
-
+            newEmployee = convertFormEmployee(ctx);
+            if(getEmployeeByEmail(newEmployee.getEmail()) != null) {
+                Employee dbEmployee = getEmployeeByEmail(newEmployee.getEmail());
+                if(newEmployee.getPassword().equals(dbEmployee.getPassword())){
+                    return true;
+                }
+            } else {
+                ctx.status(401);
+                return false;
+            }
         }
-        System.out.println("Email or Password Incorrect");
         ctx.status(401);
         return false;
     }
@@ -57,22 +63,20 @@ public class EmployeeService {
         Employee newEmployee;
         try {
             newEmployee = obj.readValue(ctx.body(), Employee.class);
-            System.out.println(newEmployee.toString());
             if(getEmployeeByEmail(newEmployee.getEmail()) == null) {
                 employeeRepository.create(newEmployee);
-                System.out.println("Employee Created");
-            } else {
-                System.out.println("Email already taken");
             }
-        } catch (JsonMappingException e) {
-            createFormEmployee(ctx);
-        } catch (JsonProcessingException e) {
-            createFormEmployee(ctx);
+        } catch (Exception e) {
+            newEmployee = convertFormEmployee(ctx);
+            if(getEmployeeByEmail(newEmployee.getEmail()) == null) {
+                newEmployee.setId(0);
+                employeeRepository.create(newEmployee);
+            }
         }
     }
 
-    // Create Employee Using Form-Encoded
-    public void createFormEmployee(Context ctx) throws UnsupportedEncodingException{
+    // Convert Form-Encoded to Employee Object
+    public Employee convertFormEmployee(Context ctx) throws UnsupportedEncodingException{
         String line = ctx.body();
         Employee newEmployee = new Employee();
 
@@ -102,14 +106,7 @@ public class EmployeeService {
                     break;
             }
         }
-        if(getEmployeeByEmail(newEmployee.getEmail()) == null) {
-            newEmployee.setId(0);
-            System.out.println(newEmployee.toString());
-            employeeRepository.create(newEmployee);
-            System.out.println("Employee Created");
-        } else {
-            System.out.println("Email already taken");
-        }
+        return newEmployee;
     }
 
     public List<Employee> getAllEmployees() {
@@ -130,7 +127,6 @@ public class EmployeeService {
             try {
                 newEmployee = obj.readValue(ctx.body(), Employee.class);
                 newEmployee.setEmail(email);
-                System.out.println(newEmployee.toString());
                 employeeRepository.updateEmployee(newEmployee);
             } catch (JsonMappingException e) {
                 e.printStackTrace();
@@ -138,15 +134,12 @@ public class EmployeeService {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("User Not Found");
+            ctx.status(404);
         }
     }
 
     // DELETE ALL ------ NOT FOR PRODUCTION!!!
     public void deleteAll() {
-        System.out.println("All Employees Deleted");
         employeeRepository.deleteAll();
     }
-
-    
 }
