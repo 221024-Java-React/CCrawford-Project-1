@@ -29,7 +29,7 @@ public class EmployeeService {
     }
 
     // Create Employee through JSON/Object Mapper
-    public void createEmployee(Context ctx) {
+    public void createEmployee(Context ctx) throws UnsupportedEncodingException {
         Employee newEmployee;
         try {
             newEmployee = obj.readValue(ctx.body(), Employee.class);
@@ -41,9 +41,9 @@ public class EmployeeService {
                 System.out.println("Email already taken");
             }
         } catch (JsonMappingException e) {
-            e.printStackTrace();
+            createFormEmployee(ctx);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            createFormEmployee(ctx);
         }
     }
 
@@ -71,7 +71,7 @@ public class EmployeeService {
                 case "password": 
                     newEmployee.setPassword(value);
                     break;
-                case "chooseRole": 
+                case "role": 
                     newEmployee.setRole(EmployeeRole.valueOf(value));
                     break;
                 default:

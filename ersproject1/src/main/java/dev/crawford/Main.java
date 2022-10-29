@@ -18,7 +18,7 @@ public class Main {
 
         app.post("/register", EmployeeController.createEmployee);
 
-        app.post("/formregister", EmployeeController.createFormEmployee);
+        // app.post("/formregister", EmployeeController.createFormEmployee);
 
         app.get("/employees", EmployeeController.getAllEmployees);
 
