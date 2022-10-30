@@ -166,10 +166,10 @@ public class ReimbursementRepository {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, updateReimbursement.getAuthor());
             ps.setString(2, updateReimbursement.getResolver());
-            ps.setString(3, updateReimbursement.getStatus().toString());
+            ps.setString(3, updateReimbursement.getStatus().toString().toUpperCase());
             ps.setDouble(4, updateReimbursement.getAmount());
             ps.setString(5, updateReimbursement.getDescription());
-            ps.setString(6, updateReimbursement.getType().toString());
+            ps.setString(6, updateReimbursement.getType().toString().toUpperCase());
             ps.setInt(7, updateReimbursement.getId());
             ps.executeUpdate();
         } catch (SQLException e) {

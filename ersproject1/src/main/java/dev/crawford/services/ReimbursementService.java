@@ -34,7 +34,6 @@ public class ReimbursementService {
             reimbursementRepository.createReimbursement(newReimbursement);
             ctx.status(201);
         } catch (Exception e) {
-            System.out.println("Exception REIMBURSEMENT");
             newReimbursement = convertFormReimbursement(ctx);
             newReimbursement.setId(0);
             reimbursementRepository.createReimbursement(newReimbursement);
@@ -83,6 +82,10 @@ public class ReimbursementService {
             Reimbursement newReimbursement;
             try {
                 newReimbursement = obj.readValue(ctx.body(), Reimbursement.class);
+                Reimbursement statusTest = reimbursementRepository.getReimbursementById(id);
+                if(statusTest.getStatus() == ReimbursementStatus.APPROVED || statusTest.getStatus() == ReimbursementStatus.DENIED) {
+                    newReimbursement.setStatus(statusTest.getStatus());
+                }
                 newReimbursement.setId(Integer.parseInt(id));
                 reimbursementRepository.updateReimbursement(newReimbursement);
             } catch (JsonMappingException e) {
