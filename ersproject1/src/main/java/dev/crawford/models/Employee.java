@@ -1,8 +1,5 @@
 package dev.crawford.models;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Employee {
 
     private int id;

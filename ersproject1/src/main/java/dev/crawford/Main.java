@@ -9,9 +9,7 @@ public class Main {
     
     public static void main(String[] args) {
 
-        Javalin app = Javalin.create(config -> {
-            config.staticFiles.add("/public", Location.CLASSPATH);
-        }).start(7070);
+        Javalin app = Javalin.create(config -> config.staticFiles.add("/public", Location.CLASSPATH)).start(7070);
 
         // app.before(EmployeeController.before);
 
