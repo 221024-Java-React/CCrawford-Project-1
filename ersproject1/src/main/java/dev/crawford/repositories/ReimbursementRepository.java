@@ -168,7 +168,7 @@ public class ReimbursementRepository {
             ps.setString(2, updateReimbursement.getResolver());
             ps.setString(3, updateReimbursement.getStatus().toString());
             ps.setDouble(4, updateReimbursement.getAmount());
-            ps.setString(4, updateReimbursement.getDescription());
+            ps.setString(5, updateReimbursement.getDescription());
             ps.setString(6, updateReimbursement.getType().toString());
             ps.setInt(7, updateReimbursement.getId());
             ps.executeUpdate();

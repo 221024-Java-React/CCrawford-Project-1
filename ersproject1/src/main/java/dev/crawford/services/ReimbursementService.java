@@ -30,6 +30,7 @@ public class ReimbursementService {
         Reimbursement newReimbursement;
         try {
             newReimbursement = obj.readValue(ctx.body(), Reimbursement.class);
+            newReimbursement.setStatus(ReimbursementStatus.PENDING);
             reimbursementRepository.createReimbursement(newReimbursement);
             ctx.status(201);
         } catch (Exception e) {
