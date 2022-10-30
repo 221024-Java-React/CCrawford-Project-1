@@ -5,20 +5,22 @@ public class Reimbursement {
     private int id;
     private String author;
     private String resolver;
-    private String status;
+    private ReimbursementStatus status;
     private Double amount;
     private String description;
+    private ReimbursementType type;
 
     public Reimbursement() {
     }
 
-    public Reimbursement(int id, String author, String resolver, String status, Double amount, String description) {
+    public Reimbursement(int id, String author, String resolver, ReimbursementStatus status, Double amount, String description, ReimbursementType type) {
         this.id = id;
         this.author = author;
         this.resolver = resolver;
         this.status = status;
         this.amount = amount;
         this.description = description;
+        this.type = type;
     }
 
     public int getId() {
@@ -45,11 +47,11 @@ public class Reimbursement {
         this.resolver = resolver;
     }
 
-    public String getStatus() {
+    public ReimbursementStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ReimbursementStatus status) {
         this.status = status;
     }
 
@@ -69,6 +71,11 @@ public class Reimbursement {
         this.description = description;
     }
 
-    
-    
+    public ReimbursementType getType() {
+        return type;
+    }
+
+    public void setType(ReimbursementType type) {
+        this.type = type;
+    }
 }

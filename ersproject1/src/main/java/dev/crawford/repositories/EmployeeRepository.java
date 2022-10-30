@@ -17,21 +17,19 @@ public class EmployeeRepository {
     static ConnectionFactory cu = ConnectionFactory.getInstance();
     
     // Create new Employee
-    public Employee create(Employee userToBeRegistered) {
+    public void create(Employee userToBeRegistered) {
         String sql = "insert into employees (id, first_name, last_name, email, passwrd, role) values (default, ?, ?, ?, ?, ?)";
         try(Connection conn = cu.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, userToBeRegistered.getFirstName());
             ps.setString(2, userToBeRegistered.getLastName());
-            ps.setString(3, userToBeRegistered.getEmail());
+            ps.setString(3, userToBeRegistered.getEmail().toLowerCase());
             ps.setString(4, userToBeRegistered.getPassword());
             ps.setString(5, userToBeRegistered.getRole().toString());
             ps.executeUpdate();
-            return userToBeRegistered;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userToBeRegistered;
     }
 
     // Read Employee by Unique value of Email
@@ -39,7 +37,7 @@ public class EmployeeRepository {
         String sql = "select * from employees where email = ?";
         try (Connection conn = cu.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, email);
+            ps.setString(1, email.toLowerCase());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Employee newEmployee = new Employee(

@@ -27,8 +27,11 @@ public class Main {
 
         app.post("/reimbursements", ReimbursementController.createReimbursement);
         app.get("/reimbursements", ReimbursementController.getAllReimbursements);
-        app.get("/reimbursements/<author>", ReimbursementController.getReimbursementByAuthor);
-        app.put("/reimbursements/<author>", ReimbursementController.updateReimbursement);
+        app.get("/reimbursements/id/<id>", ReimbursementController.getReimbursementById);
+        app.get("/reimbursements/author/<author>", ReimbursementController.getReimbursementByAuthor);
+        app.get("/reimbursements/type/<type>", ReimbursementController.getReimbursementByType);
+        app.get("/reimbursements/status/<status>", ReimbursementController.getReimbursementByStatus);
+        app.put("/reimbursements/id/<id>", ReimbursementController.updateReimbursement);
 
     }
 }
