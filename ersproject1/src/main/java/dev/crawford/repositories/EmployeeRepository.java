@@ -33,7 +33,7 @@ public class EmployeeRepository {
     }
 
     // Read Employee by Unique value of Email
-    public Employee getByEmail(String email) {
+    public Employee getEmployeeByEmail(String email) {
         String sql = "select * from employees where email = ?";
         try (Connection conn = cu.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);

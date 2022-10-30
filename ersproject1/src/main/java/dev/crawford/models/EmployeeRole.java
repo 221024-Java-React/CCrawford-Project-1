@@ -1,5 +1,7 @@
 package dev.crawford.models;
 
-public enum EmployeeRole {
+import io.javalin.security.RouteRole;
+
+public enum EmployeeRole implements RouteRole{
     EMPLOYEE, MANAGER;
 }

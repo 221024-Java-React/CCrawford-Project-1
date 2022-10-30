@@ -36,6 +36,8 @@ public class EmployeeService {
             if(getEmployeeByEmail(newEmployee.getEmail()) != null) {
                 Employee dbEmployee = getEmployeeByEmail(newEmployee.getEmail());
                 if(newEmployee.getPassword().equals(dbEmployee.getPassword())){
+                    ctx.cookieStore().set("user", newEmployee.getEmail());
+                    ctx.cookieStore().set("role", EmployeeRole.valueOf(dbEmployee.getRole().toString()));
                     return true;
                 }
             } else {
@@ -47,6 +49,8 @@ public class EmployeeService {
             if(getEmployeeByEmail(newEmployee.getEmail()) != null) {
                 Employee dbEmployee = getEmployeeByEmail(newEmployee.getEmail());
                 if(newEmployee.getPassword().equals(dbEmployee.getPassword())){
+                    ctx.cookieStore().set("user", newEmployee.getEmail());
+                    ctx.cookieStore().set("role", EmployeeRole.valueOf(dbEmployee.getRole().toString()));
                     return true;
                 }
             } else {
@@ -120,15 +124,15 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeByEmail(String email) {
-        if(employeeRepository.getByEmail(email) != null){
-            return employeeRepository.getByEmail(email);
+        if(employeeRepository.getEmployeeByEmail(email) != null){
+            return employeeRepository.getEmployeeByEmail(email);
         } else {
             return null;
         }
     }
 
     public void updateEmployee(String email, Context ctx){
-        if(employeeRepository.getByEmail(email) != null){
+        if(employeeRepository.getEmployeeByEmail(email) != null){
             Employee newEmployee;
             try {
                 newEmployee = obj.readValue(ctx.body(), Employee.class);

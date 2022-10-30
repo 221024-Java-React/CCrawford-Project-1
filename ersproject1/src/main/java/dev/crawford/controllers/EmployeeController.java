@@ -8,10 +8,7 @@ public final class EmployeeController {
     
     private static EmployeeService employeeService = new EmployeeService();
 
-    
     public static final Handler hello = ctx -> ctx.redirect("/index.html");
-
-    public static final Handler before = ctx -> System.out.println("Before all requests");
 
     public static final Handler login = ctx -> {
         if(employeeService.login(ctx)){
