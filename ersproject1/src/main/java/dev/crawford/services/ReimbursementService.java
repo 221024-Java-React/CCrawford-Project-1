@@ -2,6 +2,7 @@ package dev.crawford.services;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,15 +10,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dev.crawford.models.Employee;
 import dev.crawford.models.Reimbursement;
 import dev.crawford.models.ReimbursementStatus;
 import dev.crawford.models.ReimbursementType;
+import dev.crawford.repositories.EmployeeRepository;
 import dev.crawford.repositories.ReimbursementRepository;
 import io.javalin.http.Context;
 
 public class ReimbursementService {
 
     private ReimbursementRepository reimbursementRepository;
+    private EmployeeRepository employeeRepository;
     private ObjectMapper obj;
 
     public ReimbursementService(){
@@ -41,7 +45,7 @@ public class ReimbursementService {
         }
     }
 
-    public List<Reimbursement> getAllReimbursements(Context ctx) {
+    public List<Reimbursement> getAllReimbursements() {
         return reimbursementRepository.getAllReimbursements();
     }
 

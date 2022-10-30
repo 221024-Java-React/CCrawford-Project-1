@@ -23,10 +23,10 @@ public class ReimbursementRepository {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, newReimbursement.getAuthor());
             ps.setString(2, newReimbursement.getResolver());
-            ps.setString(3, newReimbursement.getStatus().toString());
+            ps.setString(3, newReimbursement.getStatus().toString().toUpperCase());
             ps.setDouble(4, newReimbursement.getAmount());
             ps.setString(5, newReimbursement.getDescription());
-            ps.setString(6, newReimbursement.getType().toString());
+            ps.setString(6, newReimbursement.getType().toString().toUpperCase());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

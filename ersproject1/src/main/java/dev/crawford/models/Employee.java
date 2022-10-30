@@ -1,6 +1,7 @@
 package dev.crawford.models;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Employee {
 
@@ -10,7 +11,6 @@ public class Employee {
     private String email;
     private String password;
     private EmployeeRole role;
-    private Reimbursement[] reimbursements;
 
     public Employee() {
         
@@ -78,18 +78,10 @@ public class Employee {
         this.role = role;
     }
 
-    public Reimbursement[] getReimbursements() {
-        return reimbursements;
-    }
-
-    public void setReimbursements(Reimbursement[] reimbursements) {
-        this.reimbursements = reimbursements;
-    }
-
     @Override
     public String toString() {
         return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-                + ", password=" + password + ", role=" + role + ", reimbursements=" + Arrays.toString(reimbursements)
-                + "]";
+                + ", password=" + password + ", role=" + role + "]";
     }
+
 }

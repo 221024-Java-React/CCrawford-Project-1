@@ -12,7 +12,7 @@ public class ReimbursementController {
     };
 
     public static final Handler getAllReimbursements = ctx -> {
-        ctx.json(reimbursementService.getAllReimbursements(ctx));
+        ctx.json(reimbursementService.getAllReimbursements());
     };
 
     public static final Handler getReimbursementById = ctx -> {

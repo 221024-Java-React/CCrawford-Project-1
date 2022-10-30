@@ -98,15 +98,6 @@ public class EmployeeRepository {
         }
     }
 
-
-
-
-
-
-
-
-
-
     // DELETE ALL ------ NOT FOR PRODUCTION!!!
     public void deleteAll() {
         String sql = "TRUNCATE TABLE employees CASCADE";
