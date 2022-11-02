@@ -22,7 +22,7 @@ public final class EmployeeController {
     public static final Handler createEmployee = ctx -> employeeService.createEmployee(ctx);
 
     // Get all Employees
-    public static final Handler getAllEmployees = ctx -> ctx.json(employeeService.getAllEmployees());
+    public static final Handler getAllEmployees = ctx -> ctx.json(employeeService.getAllEmployees(ctx));
 
     //Get Employee by Unique value of Email
     public static final Handler getEmployeeByEmail = ctx -> ctx.json(employeeService.getEmployeeByEmail(ctx.pathParam("email")));
@@ -34,3 +34,4 @@ public final class EmployeeController {
     public static final Handler deleteAllEmployees = ctx -> employeeService.deleteAll();
 
 }
+ 

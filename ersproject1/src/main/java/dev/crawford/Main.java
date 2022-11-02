@@ -33,7 +33,7 @@ public class Main {
         app.post("/", EmployeeController.hello, EmployeeRole.EMPLOYEE);
         app.post("/login", EmployeeController.login, EmployeeRole.EMPLOYEE);
         app.post("/register", EmployeeController.createEmployee, EmployeeRole.EMPLOYEE, EmployeeRole.MANAGER);
-        app.get("/employees", EmployeeController.getAllEmployees, EmployeeRole.MANAGER);
+        app.get("/employees", EmployeeController.getAllEmployees, EmployeeRole.EMPLOYEE, EmployeeRole.MANAGER);
         app.get("/employees/<email>", EmployeeController.getEmployeeByEmail, EmployeeRole.MANAGER);
         app.put("/employee/<email>", EmployeeController.updateEmployee, EmployeeRole.MANAGER);
 

@@ -2,6 +2,7 @@ package dev.crawford.services;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -119,8 +120,14 @@ public class EmployeeService {
         return newEmployee;
     }
 
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.getAllEmployees();
+    public List<Employee> getAllEmployees(Context ctx) {
+        if(ctx.cookieStore().get("role").equals("EMPLOYEE")){
+            List<Employee> empArr = new ArrayList<>();
+            empArr.add(employeeRepository.getEmployeeByEmail(ctx.cookieStore().get("user")));
+            return empArr;
+        } else {
+            return employeeRepository.getAllEmployees();
+        }
     }
 
     public Employee getEmployeeByEmail(String email) {
