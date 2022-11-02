@@ -3,6 +3,7 @@ package dev.crawford.services;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,56 +31,66 @@ public class EmployeeService {
     }
 
     // Login through JSON & Form-Encoded
-    public boolean login(Context ctx){
-        Employee newEmployee;
-        try {
-            newEmployee = obj.readValue(ctx.body(), Employee.class);
-            if(getEmployeeByEmail(newEmployee.getEmail()) != null) {
-                Employee dbEmployee = getEmployeeByEmail(newEmployee.getEmail());
-                if(newEmployee.getPassword().equals(dbEmployee.getPassword())){
-                    ctx.cookieStore().set("user", newEmployee.getEmail());
-                    ctx.cookieStore().set("role", EmployeeRole.valueOf(dbEmployee.getRole().toString()));
-                    return true;
-                }
-            } else {
-                ctx.status(401);
-                return false;
-            }
-        } catch (Exception e) {
-            newEmployee = convertFormEmployee(ctx);
-            if(getEmployeeByEmail(newEmployee.getEmail()) != null) {
-                Employee dbEmployee = getEmployeeByEmail(newEmployee.getEmail());
-                if(newEmployee.getPassword().equals(dbEmployee.getPassword())){
-                    ctx.cookieStore().set("user", newEmployee.getEmail());
-                    ctx.cookieStore().set("role", EmployeeRole.valueOf(dbEmployee.getRole().toString()));
-                    return true;
-                }
-            } else {
-                ctx.status(401);
-                return false;
+    public boolean login(Employee employee){
+        if(getEmployeeByEmail(employee.getEmail()) != null) {
+            Employee dbEmployee = getEmployeeByEmail(employee.getEmail());
+            if(employee.getPassword().equals(dbEmployee.getPassword())){
+                return true;
             }
         }
-        ctx.status(401);
         return false;
     }
 
     // Create Employee through JSON/Object Mapper
-    public void createEmployee(Context ctx) {
-        Employee newEmployee;
-        try {
-            newEmployee = obj.readValue(ctx.body(), Employee.class);
-            if(getEmployeeByEmail(newEmployee.getEmail()) == null) {
-                employeeRepository.create(newEmployee);
-                ctx.status(201);
+    public boolean createEmployee(Employee employee, String type) {
+        if(type.equals("JSON")){
+            if(getEmployeeByEmail(employee.getEmail()) == null) {
+                employeeRepository.create(employee);
+                return true;
             }
-        } catch (Exception e) {
-            newEmployee = convertFormEmployee(ctx);
-            if(getEmployeeByEmail(newEmployee.getEmail()) == null) {
-                newEmployee.setId(0);
-                employeeRepository.create(newEmployee);
-                ctx.status(201);
+        } else {
+            if(getEmployeeByEmail(employee.getEmail()) == null) {
+                employee.setId(0);
+                employeeRepository.create(employee);
+                return true;
             }
         }
+        return false;
+    }
+
+    public List<Employee> getAllEmployees(String user, String role) {
+        try {
+            if(role.equals("EMPLOYEE")){
+            List<Employee> empArr = new ArrayList<>();
+            empArr.add(employeeRepository.getEmployeeByEmail(user));
+            return empArr;
+        } else {
+            return employeeRepository.getAllEmployees();
+        }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    public Employee getEmployeeByEmail(String email) {
+        if(employeeRepository.getEmployeeByEmail(email) != null){
+            return employeeRepository.getEmployeeByEmail(email);
+        } else {
+            return null;
+        }
+    }
+
+    public void updateEmployee(Employee employee, String email){
+        if(employeeRepository.getEmployeeByEmail(email) != null){
+            employee.setEmail(email);
+            employeeRepository.updateEmployee(employee);
+        }
+    }
+
+    // DELETE ALL ------ NOT FOR PRODUCTION!!!
+    public void deleteAll() {
+        employeeRepository.deleteAll();
     }
 
     // Convert Form-Encoded to Employee Object
@@ -118,45 +129,5 @@ public class EmployeeService {
             }
         }
         return newEmployee;
-    }
-
-    public List<Employee> getAllEmployees(Context ctx) {
-        if(ctx.cookieStore().get("role").equals("EMPLOYEE")){
-            List<Employee> empArr = new ArrayList<>();
-            empArr.add(employeeRepository.getEmployeeByEmail(ctx.cookieStore().get("user")));
-            return empArr;
-        } else {
-            return employeeRepository.getAllEmployees();
-        }
-    }
-
-    public Employee getEmployeeByEmail(String email) {
-        if(employeeRepository.getEmployeeByEmail(email) != null){
-            return employeeRepository.getEmployeeByEmail(email);
-        } else {
-            return null;
-        }
-    }
-
-    public void updateEmployee(String email, Context ctx){
-        if(employeeRepository.getEmployeeByEmail(email) != null){
-            Employee newEmployee;
-            try {
-                newEmployee = obj.readValue(ctx.body(), Employee.class);
-                newEmployee.setEmail(email);
-                employeeRepository.updateEmployee(newEmployee);
-            } catch (JsonMappingException e) {
-                e.printStackTrace();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-        } else {
-            ctx.status(404);
-        }
-    }
-
-    // DELETE ALL ------ NOT FOR PRODUCTION!!!
-    public void deleteAll() {
-        employeeRepository.deleteAll();
     }
 }
