@@ -176,5 +176,16 @@ public class ReimbursementRepository {
             e.printStackTrace();
         }
     }
+
+    // DELETE ALL ------ NOT FOR PRODUCTION!!!
+    public void deleteAll() {
+        String sql = "TRUNCATE TABLE reimbursements CASCADE";
+        try(Connection conn = cu.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     
 }

@@ -20,8 +20,15 @@ import dev.crawford.models.EmployeeRole;
 @TestMethodOrder(OrderAnnotation.class)
 public class EmployeeServiceTest {
 
-    Employee newEmployee = new Employee(0, "John", "Smith", "email5@email.com", "pass", EmployeeRole.MANAGER);
-    EmployeeService employeeService= new EmployeeService();
+    Employee newEmployee = new Employee(
+        0, 
+        "John", 
+        "Smith", 
+        "email5@email.com", 
+        "pass", 
+        EmployeeRole.MANAGER
+    );
+    EmployeeService employeeService = new EmployeeService();
 
     @Test
     @Order(1)

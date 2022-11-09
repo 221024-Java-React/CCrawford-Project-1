@@ -5,10 +5,6 @@ import java.net.URLDecoder;
 import java.util.Collections;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import dev.crawford.models.Reimbursement;
 import dev.crawford.models.ReimbursementStatus;
 import dev.crawford.models.ReimbursementType;
@@ -18,35 +14,23 @@ import io.javalin.http.Context;
 public class ReimbursementService {
 
     private ReimbursementRepository reimbursementRepository;
-    private ObjectMapper obj;
 
-    public ReimbursementService(){
+    public ReimbursementService() {
         reimbursementRepository = new ReimbursementRepository();
-        obj = new ObjectMapper();
     }
 
     // Create Reimbursement through JSON/Object Mapper
-    public void createReimbursement(Context ctx) {
-        Reimbursement newReimbursement;
-        try {
-            newReimbursement = obj.readValue(ctx.body(), Reimbursement.class);
-            newReimbursement.setStatus(ReimbursementStatus.PENDING);
-            reimbursementRepository.createReimbursement(newReimbursement);
-            ctx.status(201);
-        } catch (Exception e) {
-            newReimbursement = convertFormReimbursement(ctx);
-            newReimbursement.setId(0);
-            reimbursementRepository.createReimbursement(newReimbursement);
-            ctx.status(201);
-        }
+    public void createReimbursement(Reimbursement reimbursement) {
+        reimbursement.setStatus(ReimbursementStatus.PENDING);
+        reimbursementRepository.createReimbursement(reimbursement);
     }
 
     public List<Reimbursement> getAllReimbursements() {
         return reimbursementRepository.getAllReimbursements();
     }
 
-    public Reimbursement getReimbursementById(String id){
-        if(reimbursementRepository.getReimbursementById(id) != null){
+    public Reimbursement getReimbursementById(String id) {
+        if (reimbursementRepository.getReimbursementById(id) != null) {
             return reimbursementRepository.getReimbursementById(id);
         } else {
             return null;
@@ -54,7 +38,7 @@ public class ReimbursementService {
     }
 
     public List<Reimbursement> getReimbursementByAuthor(String author) {
-        if(reimbursementRepository.getReimbursementByAuthor(author) != null){
+        if (reimbursementRepository.getReimbursementByAuthor(author) != null) {
             return reimbursementRepository.getReimbursementByAuthor(author);
         } else {
             return Collections.emptyList();
@@ -62,7 +46,7 @@ public class ReimbursementService {
     }
 
     public List<Reimbursement> getReimbursementByType(String type) {
-        if(reimbursementRepository.getReimbursementByType(type) != null){
+        if (reimbursementRepository.getReimbursementByType(type) != null) {
             return reimbursementRepository.getReimbursementByType(type);
         } else {
             return Collections.emptyList();
@@ -70,36 +54,32 @@ public class ReimbursementService {
     }
 
     public List<Reimbursement> getReimbursementByStatus(String status) {
-        if(reimbursementRepository.getReimbursementByStatus(status) != null){
+        if (reimbursementRepository.getReimbursementByStatus(status) != null) {
             return reimbursementRepository.getReimbursementByStatus(status);
         } else {
             return Collections.emptyList();
         }
     }
 
-	public void updateReimbursement(String id, Context ctx) {
-        if(reimbursementRepository.getReimbursementById(id) != null){
-            Reimbursement newReimbursement;
-            try {
-                newReimbursement = obj.readValue(ctx.body(), Reimbursement.class);
-                Reimbursement statusTest = reimbursementRepository.getReimbursementById(id);
-                if(statusTest.getStatus() == ReimbursementStatus.APPROVED || statusTest.getStatus() == ReimbursementStatus.DENIED) {
-                    newReimbursement.setStatus(statusTest.getStatus());
-                }
-                newReimbursement.setId(Integer.parseInt(id));
-                reimbursementRepository.updateReimbursement(newReimbursement);
-            } catch (JsonMappingException e) {
-                e.printStackTrace();
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
+    public void updateReimbursement(String id, Reimbursement reimbursement) {
+        if (reimbursementRepository.getReimbursementById(id) != null) {
+            Reimbursement statusTest = reimbursementRepository.getReimbursementById(id);
+            if (statusTest.getStatus() == ReimbursementStatus.APPROVED
+                    || statusTest.getStatus() == ReimbursementStatus.DENIED) {
+                        reimbursement.setStatus(statusTest.getStatus());
             }
-        } else {
-            ctx.status(404);
+            reimbursement.setId(Integer.parseInt(id));
+            reimbursementRepository.updateReimbursement(reimbursement);
         }
-	}
+    }
+
+    // DELETE ALL ------ NOT FOR PRODUCTION!!!
+    public void deleteAll() {
+        reimbursementRepository.deleteAll();
+    }
 
     // Convert Form-Encoded to Reimbursement Object
-    private Reimbursement convertFormReimbursement(Context ctx) {
+    public Reimbursement convertFormReimbursement(Context ctx) {
         String line = ctx.body();
         Reimbursement newReimbursement = new Reimbursement();
 
@@ -110,20 +90,20 @@ public class ReimbursementService {
             try {
                 name = URLDecoder.decode(fields[0], "UTF-8");
                 String value = URLDecoder.decode(fields[1], "UTF-8");
-                switch(name) {
-                    case "firstName": 
+                switch (name) {
+                    case "firstName":
                         newReimbursement.setAuthor(value);
                         break;
-                    case "lastName": 
+                    case "lastName":
                         newReimbursement.setResolver(value);
                         break;
-                    case "email": 
+                    case "email":
                         newReimbursement.setStatus(ReimbursementStatus.valueOf(value));
                         break;
-                    case "password": 
+                    case "password":
                         newReimbursement.setAmount(Double.parseDouble(value));
                         break;
-                    case "type": 
+                    case "type":
                         newReimbursement.setType(ReimbursementType.valueOf(value));
                         break;
                     default:
@@ -135,5 +115,5 @@ public class ReimbursementService {
         }
         return newReimbursement;
     }
-    
+
 }

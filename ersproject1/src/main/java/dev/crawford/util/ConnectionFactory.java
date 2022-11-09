@@ -10,10 +10,9 @@ import java.util.Properties;
 public class ConnectionFactory {
 
     private static ConnectionFactory instance = null;
-    private static Properties dbProps;
+    private static Properties dbProps = new Properties();
 
     private ConnectionFactory() {
-        dbProps = new Properties();
         InputStream props = ConnectionFactory.class.getClassLoader().getResourceAsStream("connection.properties");
         try {
             dbProps.load(props);
@@ -32,13 +31,7 @@ public class ConnectionFactory {
     public Connection getConnection() {
 
         Connection conn = null;
-
-        try {
-            Class.forName(dbProps.getProperty("driver"));
-        } catch (ClassNotFoundException e){
-            e.printStackTrace();
-        }
-
+        
         String url = dbProps.getProperty("url");
         String username = dbProps.getProperty("username");
         String password = dbProps.getProperty("password");

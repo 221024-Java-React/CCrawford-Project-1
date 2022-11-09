@@ -39,7 +39,7 @@ public class EmployeeRepository {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email.toLowerCase());
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            while(rs.next()) {
                 Employee newEmployee = new Employee(
                     rs.getInt("id"),
                     rs.getString("first_name"),

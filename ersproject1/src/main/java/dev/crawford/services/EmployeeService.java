@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import dev.crawford.models.Employee;
 import dev.crawford.models.EmployeeRole;
 import dev.crawford.repositories.EmployeeRepository;
@@ -19,11 +15,9 @@ import io.javalin.http.Context;
 public class EmployeeService {
     
     private EmployeeRepository employeeRepository;
-    private ObjectMapper obj;
 
     public EmployeeService(){
         employeeRepository = new EmployeeRepository();
-        obj = new ObjectMapper();
     }
 
     public void logging(){

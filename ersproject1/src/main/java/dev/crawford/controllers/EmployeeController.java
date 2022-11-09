@@ -27,9 +27,9 @@ public final class EmployeeController {
             ctx.cookieStore().set("user", newEmployee.getEmail());
             Employee dbEmployee = employeeService.getEmployeeByEmail(newEmployee.getEmail());
             ctx.cookieStore().set("role", EmployeeRole.valueOf(dbEmployee.getRole().toString()));
-            ctx.html("Login Success");
+            ctx.result("Login Success");
         } else {
-            ctx.html("Login Failed");
+            ctx.result("Login Failed");
         }
     };
 
@@ -55,9 +55,7 @@ public final class EmployeeController {
         
 
     //Get Employee by Unique value of Email
-    public static final Handler getEmployeeByEmail = ctx -> {
-        ctx.json(employeeService.getEmployeeByEmail(ctx.pathParam("email")));
-    };
+    public static final Handler getEmployeeByEmail = ctx -> ctx.json(employeeService.getEmployeeByEmail(ctx.pathParam("email")));
 
     // Put Update Employee
     public static final Handler updateEmployee = ctx -> {
