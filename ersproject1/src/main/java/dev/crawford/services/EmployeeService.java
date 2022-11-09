@@ -8,20 +8,15 @@ import java.util.List;
 
 import dev.crawford.models.Employee;
 import dev.crawford.models.EmployeeRole;
-import dev.crawford.repositories.EmployeeRepository;
-import dev.crawford.util.LoggingUtil;
+import dev.crawford.repositories.EmployeeDAO;
 import io.javalin.http.Context;
 
 public class EmployeeService {
     
-    private EmployeeRepository employeeRepository;
+    private EmployeeDAO employeeDAO;
 
-    public EmployeeService(){
-        employeeRepository = new EmployeeRepository();
-    }
-
-    public void logging(){
-        LoggingUtil.getLogger().warn("This is a warning");
+    public EmployeeService(EmployeeDAO employeeDAO){
+        this.employeeDAO = employeeDAO;
     }
 
     // Login through JSON & Form-Encoded
@@ -39,13 +34,13 @@ public class EmployeeService {
     public boolean createEmployee(Employee employee, String type) {
         if(type.equals("JSON")){
             if(getEmployeeByEmail(employee.getEmail()) == null) {
-                employeeRepository.create(employee);
+                employeeDAO.create(employee);
                 return true;
             }
         } else {
             if(getEmployeeByEmail(employee.getEmail()) == null) {
                 employee.setId(0);
-                employeeRepository.create(employee);
+                employeeDAO.create(employee);
                 return true;
             }
         }
@@ -56,10 +51,10 @@ public class EmployeeService {
         try {
             if(role.equals("EMPLOYEE")){
             List<Employee> empArr = new ArrayList<>();
-            empArr.add(employeeRepository.getEmployeeByEmail(user));
+            empArr.add(employeeDAO.getEmployeeByEmail(user));
             return empArr;
         } else {
-            return employeeRepository.getAllEmployees();
+            return employeeDAO.getAllEmployees();
         }
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -68,23 +63,23 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeByEmail(String email) {
-        if(employeeRepository.getEmployeeByEmail(email) != null){
-            return employeeRepository.getEmployeeByEmail(email);
+        if(employeeDAO.getEmployeeByEmail(email) != null){
+            return employeeDAO.getEmployeeByEmail(email);
         } else {
             return null;
         }
     }
 
     public void updateEmployee(Employee employee, String email){
-        if(employeeRepository.getEmployeeByEmail(email) != null){
+        if(employeeDAO.getEmployeeByEmail(email) != null){
             employee.setEmail(email);
-            employeeRepository.updateEmployee(employee);
+            employeeDAO.updateEmployee(employee);
         }
     }
 
     // DELETE ALL ------ NOT FOR PRODUCTION!!!
     public void deleteAll() {
-        employeeRepository.deleteAll();
+        employeeDAO.deleteAll();
     }
 
     // Convert Form-Encoded to Employee Object

@@ -17,6 +17,8 @@ import dev.crawford.models.EmployeeRole;
 import dev.crawford.models.Reimbursement;
 import dev.crawford.models.ReimbursementStatus;
 import dev.crawford.models.ReimbursementType;
+import dev.crawford.repositories.EmployeeDAOJDBC;
+import dev.crawford.repositories.ReimbursementDAOJDBC;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class ReimbursementServiceTest {
@@ -29,7 +31,7 @@ public class ReimbursementServiceTest {
             14.15,
             "Test Reimbursement",
             ReimbursementType.TRAVEL);
-    ReimbursementService reimbursementService = new ReimbursementService();
+    ReimbursementService reimbursementService = new ReimbursementService(new ReimbursementDAOJDBC());
 
     Employee newEmployee = new Employee(
             0,
@@ -38,7 +40,7 @@ public class ReimbursementServiceTest {
             "email5@email.com",
             "pass",
             EmployeeRole.MANAGER);
-    EmployeeService employeeService = new EmployeeService();
+    EmployeeService employeeService = new EmployeeService(new EmployeeDAOJDBC());
 
     @Test
     @Order(1)

@@ -8,74 +8,74 @@ import java.util.List;
 import dev.crawford.models.Reimbursement;
 import dev.crawford.models.ReimbursementStatus;
 import dev.crawford.models.ReimbursementType;
-import dev.crawford.repositories.ReimbursementRepository;
+import dev.crawford.repositories.ReimbursementDAO;
 import io.javalin.http.Context;
 
 public class ReimbursementService {
 
-    private ReimbursementRepository reimbursementRepository;
+    private ReimbursementDAO reimbursementDao;
 
-    public ReimbursementService() {
-        reimbursementRepository = new ReimbursementRepository();
+    public ReimbursementService(ReimbursementDAO reimbursementDao) {
+        this.reimbursementDao = reimbursementDao;
     }
 
     // Create Reimbursement through JSON/Object Mapper
     public void createReimbursement(Reimbursement reimbursement) {
         reimbursement.setStatus(ReimbursementStatus.PENDING);
-        reimbursementRepository.createReimbursement(reimbursement);
+        reimbursementDao.createReimbursement(reimbursement);
     }
 
     public List<Reimbursement> getAllReimbursements() {
-        return reimbursementRepository.getAllReimbursements();
+        return reimbursementDao.getAllReimbursements();
     }
 
     public Reimbursement getReimbursementById(String id) {
-        if (reimbursementRepository.getReimbursementById(id) != null) {
-            return reimbursementRepository.getReimbursementById(id);
+        if (reimbursementDao.getReimbursementById(id) != null) {
+            return reimbursementDao.getReimbursementById(id);
         } else {
             return null;
         }
     }
 
     public List<Reimbursement> getReimbursementByAuthor(String author) {
-        if (reimbursementRepository.getReimbursementByAuthor(author) != null) {
-            return reimbursementRepository.getReimbursementByAuthor(author);
+        if (reimbursementDao.getReimbursementByAuthor(author) != null) {
+            return reimbursementDao.getReimbursementByAuthor(author);
         } else {
             return Collections.emptyList();
         }
     }
 
     public List<Reimbursement> getReimbursementByType(String type) {
-        if (reimbursementRepository.getReimbursementByType(type) != null) {
-            return reimbursementRepository.getReimbursementByType(type);
+        if (reimbursementDao.getReimbursementByType(type) != null) {
+            return reimbursementDao.getReimbursementByType(type);
         } else {
             return Collections.emptyList();
         }
     }
 
     public List<Reimbursement> getReimbursementByStatus(String status) {
-        if (reimbursementRepository.getReimbursementByStatus(status) != null) {
-            return reimbursementRepository.getReimbursementByStatus(status);
+        if (reimbursementDao.getReimbursementByStatus(status) != null) {
+            return reimbursementDao.getReimbursementByStatus(status);
         } else {
             return Collections.emptyList();
         }
     }
 
     public void updateReimbursement(String id, Reimbursement reimbursement) {
-        if (reimbursementRepository.getReimbursementById(id) != null) {
-            Reimbursement statusTest = reimbursementRepository.getReimbursementById(id);
+        if (reimbursementDao.getReimbursementById(id) != null) {
+            Reimbursement statusTest = reimbursementDao.getReimbursementById(id);
             if (statusTest.getStatus() == ReimbursementStatus.APPROVED
                     || statusTest.getStatus() == ReimbursementStatus.DENIED) {
                         reimbursement.setStatus(statusTest.getStatus());
             }
             reimbursement.setId(Integer.parseInt(id));
-            reimbursementRepository.updateReimbursement(reimbursement);
+            reimbursementDao.updateReimbursement(reimbursement);
         }
     }
 
     // DELETE ALL ------ NOT FOR PRODUCTION!!!
     public void deleteAll() {
-        reimbursementRepository.deleteAll();
+        reimbursementDao.deleteAll();
     }
 
     // Convert Form-Encoded to Reimbursement Object

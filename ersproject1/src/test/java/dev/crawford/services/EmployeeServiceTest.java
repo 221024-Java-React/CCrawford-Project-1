@@ -16,6 +16,7 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 import dev.crawford.models.Employee;
 import dev.crawford.models.EmployeeRole;
+import dev.crawford.repositories.EmployeeDAOJDBC;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class EmployeeServiceTest {
@@ -28,7 +29,7 @@ public class EmployeeServiceTest {
         "pass", 
         EmployeeRole.MANAGER
     );
-    EmployeeService employeeService = new EmployeeService();
+    EmployeeService employeeService = new EmployeeService(new EmployeeDAOJDBC());
 
     @Test
     @Order(1)

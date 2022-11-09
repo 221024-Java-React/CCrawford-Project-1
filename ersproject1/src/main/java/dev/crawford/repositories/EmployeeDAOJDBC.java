@@ -12,7 +12,7 @@ import dev.crawford.models.Employee;
 import dev.crawford.models.EmployeeRole;
 import dev.crawford.util.ConnectionFactory;
 
-public class EmployeeRepository {
+public class EmployeeDAOJDBC implements EmployeeDAO{
     
     static ConnectionFactory cu = ConnectionFactory.getInstance();
     

@@ -13,7 +13,7 @@ import dev.crawford.models.ReimbursementStatus;
 import dev.crawford.models.ReimbursementType;
 import dev.crawford.util.ConnectionFactory;
 
-public class ReimbursementRepository {
+public class ReimbursementDAOJDBC implements ReimbursementDAO{
 
     static ConnectionFactory cu = ConnectionFactory.getInstance();
 

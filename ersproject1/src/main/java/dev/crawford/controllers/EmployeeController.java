@@ -10,13 +10,18 @@ import io.javalin.http.Handler;
 
 public final class EmployeeController {
     
-    private static EmployeeService employeeService = new EmployeeService();
+    private EmployeeService employeeService;
 
-    private static ObjectMapper obj = new ObjectMapper();
+    private ObjectMapper obj;
 
-    public static final Handler hello = ctx -> ctx.redirect("/index.html");
+    public EmployeeController(EmployeeService employeeService){
+        this.employeeService = employeeService;
+        obj = new ObjectMapper();
+    }
 
-    public static final Handler login = ctx -> {
+    public final Handler hello = ctx -> ctx.redirect("/index.html");
+
+    public final Handler login = ctx -> {
         Employee newEmployee;
         try {
             newEmployee = obj.readValue(ctx.body(), Employee.class);
@@ -34,7 +39,7 @@ public final class EmployeeController {
     };
 
     // Create Employee Using JSON or Form-Encoded
-    public static final Handler createEmployee = ctx -> {
+    public final Handler createEmployee = ctx -> {
         Employee newEmployee;
         try {
             newEmployee = obj.readValue(ctx.body(), Employee.class);
@@ -47,7 +52,7 @@ public final class EmployeeController {
     };
 
     // Get all Employees
-    public static final Handler getAllEmployees = ctx -> {
+    public final Handler getAllEmployees = ctx -> {
         String user = ctx.cookieStore().get("user").toString();
         String role = ctx.cookieStore().get("role").toString();
         ctx.json(employeeService.getAllEmployees(user, role));
@@ -55,10 +60,10 @@ public final class EmployeeController {
         
 
     //Get Employee by Unique value of Email
-    public static final Handler getEmployeeByEmail = ctx -> ctx.json(employeeService.getEmployeeByEmail(ctx.pathParam("email")));
+    public final Handler getEmployeeByEmail = ctx -> ctx.json(employeeService.getEmployeeByEmail(ctx.pathParam("email")));
 
     // Put Update Employee
-    public static final Handler updateEmployee = ctx -> {
+    public final Handler updateEmployee = ctx -> {
         Employee newEmployee;
         String email = ctx.pathParam("email");
         try {
@@ -71,7 +76,7 @@ public final class EmployeeController {
     };
 
     // DELETE ALL ------ NOT FOR PRODUCTION!!!
-    public static final Handler deleteAllEmployees = ctx -> employeeService.deleteAll();
+    public final Handler deleteAllEmployees = ctx -> employeeService.deleteAll();
 
 }
  

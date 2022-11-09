@@ -8,11 +8,16 @@ import io.javalin.http.Handler;
 
 public class ReimbursementController {
 
-    private static ReimbursementService reimbursementService = new ReimbursementService();
+    private ReimbursementService reimbursementService;
 
-    private static ObjectMapper obj = new ObjectMapper();
+    private ObjectMapper obj;
 
-    public static final Handler createReimbursement = ctx -> {
+    public ReimbursementController(ReimbursementService reimbursementService){
+        this.reimbursementService = reimbursementService;
+        obj = new ObjectMapper();
+    }
+
+    public final Handler createReimbursement = ctx -> {
         Reimbursement newReimbursement;
         try {
             newReimbursement = obj.readValue(ctx.body(), Reimbursement.class);
@@ -22,21 +27,21 @@ public class ReimbursementController {
         reimbursementService.createReimbursement(newReimbursement);
     };
 
-    public static final Handler getAllReimbursements = ctx -> ctx.json(reimbursementService.getAllReimbursements());
+    public final Handler getAllReimbursements = ctx -> ctx.json(reimbursementService.getAllReimbursements());
 
-    public static final Handler getReimbursementById = ctx -> ctx
+    public final Handler getReimbursementById = ctx -> ctx
             .json(reimbursementService.getReimbursementById(ctx.pathParam("id")));
 
-    public static final Handler getReimbursementByAuthor = ctx -> ctx
+    public final Handler getReimbursementByAuthor = ctx -> ctx
             .json(reimbursementService.getReimbursementByAuthor(ctx.pathParam("author")));
 
-    public static final Handler getReimbursementByType = ctx -> ctx
+    public final Handler getReimbursementByType = ctx -> ctx
             .json(reimbursementService.getReimbursementByType(ctx.pathParam("type")));
 
-    public static final Handler getReimbursementByStatus = ctx -> ctx
+    public final Handler getReimbursementByStatus = ctx -> ctx
             .json(reimbursementService.getReimbursementByStatus(ctx.pathParam("status")));
 
-    public static final Handler updateReimbursement = ctx -> {
+    public final Handler updateReimbursement = ctx -> {
         Reimbursement newReimbursement;
         try {
             newReimbursement = obj.readValue(ctx.body(), Reimbursement.class);
@@ -45,4 +50,7 @@ public class ReimbursementController {
         }
         reimbursementService.updateReimbursement(ctx.pathParam("id"), newReimbursement);
     };
+
+    // DELETE ALL ------ NOT FOR PRODUCTION!!!
+    public final Handler deleteAllReimbursements = ctx -> reimbursementService.deleteAll();
 }
