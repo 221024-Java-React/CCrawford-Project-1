@@ -59,8 +59,8 @@ public class Main {
         app.get("/reimbursements", reimbursementController.getAllReimbursements, EmployeeRole.EMPLOYEE, EmployeeRole.MANAGER);
         app.get("/reimbursements/id/<id>", reimbursementController.getReimbursementById, EmployeeRole.MANAGER);
         app.get("/reimbursements/author/<author>", reimbursementController.getReimbursementByAuthor, EmployeeRole.MANAGER);
-        app.get("/reimbursements/type/<type>", reimbursementController.getReimbursementByType, EmployeeRole.EMPLOYEE, EmployeeRole.MANAGER);
-        app.get("/reimbursements/status/<status>", reimbursementController.getReimbursementByStatus, EmployeeRole.EMPLOYEE, EmployeeRole.MANAGER);
+        app.get("/reimbursements/type/<type>", reimbursementController.getReimbursementByType, EmployeeRole.MANAGER);
+        app.get("/reimbursements/status/<status>", reimbursementController.getReimbursementByStatus, EmployeeRole.MANAGER);
         app.put("/reimbursements/id/<id>", reimbursementController.updateReimbursement, EmployeeRole.MANAGER);
 
     }
