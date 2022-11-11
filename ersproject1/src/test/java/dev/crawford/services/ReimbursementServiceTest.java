@@ -71,7 +71,7 @@ public class ReimbursementServiceTest {
         assertNotEquals(
                 newReimbursement.getStatus(),
                 reimbursementService.getAllReimbursements().get(0).getStatus());
-        reimbursementService.updateReimbursement(idCheck, newReimbursement);
+        reimbursementService.updateReimbursement(idCheck, newReimbursement, "email5@email.com");
         assertEquals(newReimbursement.getAmount(), reimbursementService.getAllReimbursements().get(0).getAmount());
         assertEquals(newReimbursement.getType(), reimbursementService.getAllReimbursements().get(0).getType());
         assertEquals(newReimbursement.getDescription(),

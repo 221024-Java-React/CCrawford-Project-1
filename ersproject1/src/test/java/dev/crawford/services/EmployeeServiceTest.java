@@ -25,8 +25,8 @@ public class EmployeeServiceTest {
         0, 
         "John", 
         "Smith", 
-        "email5@email.com", 
-        "pass", 
+        "email5@email", 
+        "password", 
         EmployeeRole.MANAGER
     );
     EmployeeService employeeService = new EmployeeService(new EmployeeDAOJDBC());
@@ -46,19 +46,19 @@ public class EmployeeServiceTest {
     @Test
     @Order(3)
     public void testGetAllEmployees() {
-        assertEquals(newEmployee.getEmail(), employeeService.getAllEmployees("email5@email.com", "EMPLOYEE").get(0).getEmail());
-        assertEquals(newEmployee.getFirstName(), employeeService.getAllEmployees("email5@email.com", "EMPLOYEE").get(0).getFirstName());
-        assertEquals(newEmployee.getLastName(), employeeService.getAllEmployees("email5@email.com", "EMPLOYEE").get(0).getLastName());
-        assertEquals(newEmployee.getRole(), employeeService.getAllEmployees("email5@email.com", "EMPLOYEE").get(0).getRole());
+        assertEquals(newEmployee.getEmail(), employeeService.getAllEmployees("email5@email", "EMPLOYEE").get(0).getEmail());
+        assertEquals(newEmployee.getFirstName(), employeeService.getAllEmployees("email5@email", "EMPLOYEE").get(0).getFirstName());
+        assertEquals(newEmployee.getLastName(), employeeService.getAllEmployees("email5@email", "EMPLOYEE").get(0).getLastName());
+        assertEquals(newEmployee.getRole(), employeeService.getAllEmployees("email5@email", "EMPLOYEE").get(0).getRole());
     }
 
     @Test
     @Order(4)
     public void testGetEmployeeByEmail() {
-        assertEquals(newEmployee.getEmail(), employeeService.getEmployeeByEmail("email5@email.com").getEmail());
-        assertEquals(newEmployee.getFirstName(), employeeService.getEmployeeByEmail("email5@email.com").getFirstName());
-        assertEquals(newEmployee.getLastName(), employeeService.getEmployeeByEmail("email5@email.com").getLastName());
-        assertEquals(newEmployee.getRole(), employeeService.getEmployeeByEmail("email5@email.com").getRole());
+        assertEquals(newEmployee.getEmail(), employeeService.getEmployeeByEmail("email5@email").getEmail());
+        assertEquals(newEmployee.getFirstName(), employeeService.getEmployeeByEmail("email5@email").getFirstName());
+        assertEquals(newEmployee.getLastName(), employeeService.getEmployeeByEmail("email5@email").getLastName());
+        assertEquals(newEmployee.getRole(), employeeService.getEmployeeByEmail("email5@email").getRole());
     }
 
     @Test
@@ -69,13 +69,13 @@ public class EmployeeServiceTest {
         newEmployee.setRole(EmployeeRole.EMPLOYEE);
         assertNotEquals(
             newEmployee.getRole(), 
-            employeeService.getEmployeeByEmail("email5@email.com").getRole()
+            employeeService.getEmployeeByEmail("email5@email").getRole()
         );
-        employeeService.updateEmployee(newEmployee, "email5@email.com");
-        assertEquals(newEmployee.getEmail(), employeeService.getEmployeeByEmail("email5@email.com").getEmail());
-        assertEquals(newEmployee.getFirstName(), employeeService.getEmployeeByEmail("email5@email.com").getFirstName());
-        assertEquals(newEmployee.getLastName(), employeeService.getEmployeeByEmail("email5@email.com").getLastName());
-        assertEquals(newEmployee.getRole(), employeeService.getEmployeeByEmail("email5@email.com").getRole());
+        employeeService.updateEmployee(newEmployee, "email5@email");
+        assertEquals(newEmployee.getEmail(), employeeService.getEmployeeByEmail("email5@email").getEmail());
+        assertEquals(newEmployee.getFirstName(), employeeService.getEmployeeByEmail("email5@email").getFirstName());
+        assertEquals(newEmployee.getLastName(), employeeService.getEmployeeByEmail("email5@email").getLastName());
+        assertEquals(newEmployee.getRole(), employeeService.getEmployeeByEmail("email5@email").getRole());
     }
 
     @Test

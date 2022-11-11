@@ -30,15 +30,15 @@ public class ReimbursementService {
     }
 
     public Reimbursement getReimbursementById(String id) {
-        if (reimbursementDao.getReimbursementById(id) != null) {
+        if(reimbursementDao.getReimbursementById(id) != null) {
             return reimbursementDao.getReimbursementById(id);
         } else {
-            return null;
+            return new Reimbursement();
         }
     }
 
     public List<Reimbursement> getReimbursementByAuthor(String author) {
-        if (reimbursementDao.getReimbursementByAuthor(author) != null) {
+        if(reimbursementDao.getReimbursementByAuthor(author) != null) {
             return reimbursementDao.getReimbursementByAuthor(author);
         } else {
             return Collections.emptyList();
@@ -46,7 +46,7 @@ public class ReimbursementService {
     }
 
     public List<Reimbursement> getReimbursementByType(String type) {
-        if (reimbursementDao.getReimbursementByType(type) != null) {
+        if(reimbursementDao.getReimbursementByType(type) != null) {
             return reimbursementDao.getReimbursementByType(type);
         } else {
             return Collections.emptyList();
@@ -54,23 +54,31 @@ public class ReimbursementService {
     }
 
     public List<Reimbursement> getReimbursementByStatus(String status) {
-        if (reimbursementDao.getReimbursementByStatus(status) != null) {
+        if(reimbursementDao.getReimbursementByStatus(status) != null) {
             return reimbursementDao.getReimbursementByStatus(status);
         } else {
             return Collections.emptyList();
         }
     }
 
-    public void updateReimbursement(String id, Reimbursement reimbursement) {
-        if (reimbursementDao.getReimbursementById(id) != null) {
+    public boolean updateReimbursement(String id, Reimbursement reimbursement, String resolver) {
+        if(reimbursementDao.getReimbursementById(id) != null) {
             Reimbursement statusTest = reimbursementDao.getReimbursementById(id);
-            if (statusTest.getStatus() == ReimbursementStatus.APPROVED
+            if(statusTest.getStatus() == ReimbursementStatus.APPROVED
                     || statusTest.getStatus() == ReimbursementStatus.DENIED) {
                         reimbursement.setStatus(statusTest.getStatus());
             }
+            if(statusTest.getResolver() == null){
+                reimbursement.setResolver(resolver);
+            } else {
+                return false;
+            }
             reimbursement.setId(Integer.parseInt(id));
+            reimbursement.setAuthor(statusTest.getAuthor());
             reimbursementDao.updateReimbursement(reimbursement);
+            return true;
         }
+        return false;
     }
 
     // DELETE ALL ------ NOT FOR PRODUCTION!!!
@@ -84,24 +92,27 @@ public class ReimbursementService {
         Reimbursement newReimbursement = new Reimbursement();
 
         String[] pairs = line.split("\\&");
-        for (int i = 0; i < pairs.length; i++) {
+        for(int i = 0; i < pairs.length; i++) {
             String[] fields = pairs[i].split("=");
             String name;
             try {
                 name = URLDecoder.decode(fields[0], "UTF-8");
                 String value = URLDecoder.decode(fields[1], "UTF-8");
                 switch (name) {
-                    case "firstName":
+                    case "author":
                         newReimbursement.setAuthor(value);
                         break;
-                    case "lastName":
+                    case "resolver":
                         newReimbursement.setResolver(value);
                         break;
-                    case "email":
+                    case "status":
                         newReimbursement.setStatus(ReimbursementStatus.valueOf(value));
                         break;
-                    case "password":
+                    case "amount":
                         newReimbursement.setAmount(Double.parseDouble(value));
+                        break;
+                    case "description":
+                        newReimbursement.setDescription(value);
                         break;
                     case "type":
                         newReimbursement.setType(ReimbursementType.valueOf(value));

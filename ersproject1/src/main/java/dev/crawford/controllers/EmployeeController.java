@@ -43,12 +43,20 @@ public final class EmployeeController {
         Employee newEmployee;
         try {
             newEmployee = obj.readValue(ctx.body(), Employee.class);
-            employeeService.createEmployee(newEmployee, "JSON");
+            newEmployee.setRole(EmployeeRole.EMPLOYEE);
+            if(employeeService.createEmployee(newEmployee, "JSON")){
+                ctx.status(201);
+            } else {
+                ctx.status(403);
+            }
         } catch (Exception e) {
             newEmployee = employeeService.convertFormEmployee(ctx);
-            employeeService.createEmployee(newEmployee, "FORM-ENCODED");
+            if(employeeService.createEmployee(newEmployee, "FORM-ENCODED")){
+                ctx.status(201);
+            } else {
+                ctx.status(403);
+            }
         }
-        ctx.status(201);
     };
 
     // Get all Employees

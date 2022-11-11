@@ -50,7 +50,7 @@ public class Main {
         app.post("/register", employeeController.createEmployee, EmployeeRole.EMPLOYEE, EmployeeRole.MANAGER);
         app.get("/employees", employeeController.getAllEmployees, EmployeeRole.EMPLOYEE, EmployeeRole.MANAGER);
         app.get("/employees/<email>", employeeController.getEmployeeByEmail, EmployeeRole.MANAGER);
-        app.put("/employee/<email>", employeeController.updateEmployee, EmployeeRole.MANAGER);
+        app.put("/employees/<email>", employeeController.updateEmployee, EmployeeRole.MANAGER);
 
         // DELETE ALL ------ NOT FOR PRODUCTION!!!
         app.delete("/employees", employeeController.deleteAllEmployees, EmployeeRole.MANAGER);

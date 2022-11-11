@@ -24,7 +24,9 @@ public class ReimbursementController {
         } catch (Exception e) {
             newReimbursement = reimbursementService.convertFormReimbursement(ctx);
         }
+        newReimbursement.setAuthor(ctx.cookieStore().get("user").toString());
         reimbursementService.createReimbursement(newReimbursement);
+        ctx.status(201);
     };
 
     public final Handler getAllReimbursements = ctx -> ctx.json(reimbursementService.getAllReimbursements());
@@ -48,7 +50,11 @@ public class ReimbursementController {
         } catch (Exception e) {
             newReimbursement = reimbursementService.convertFormReimbursement(ctx);
         }
-        reimbursementService.updateReimbursement(ctx.pathParam("id"), newReimbursement);
+        if(reimbursementService.updateReimbursement(ctx.pathParam("id"), newReimbursement, ctx.cookieStore().get("user").toString())){
+            ctx.status(201);
+        } else {
+            ctx.status(401);
+        }
     };
 
     // DELETE ALL ------ NOT FOR PRODUCTION!!!
