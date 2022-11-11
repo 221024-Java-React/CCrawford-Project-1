@@ -2,6 +2,7 @@ package dev.crawford.services;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,8 +26,19 @@ public class ReimbursementService {
         reimbursementDao.createReimbursement(reimbursement);
     }
 
-    public List<Reimbursement> getAllReimbursements() {
-        return reimbursementDao.getAllReimbursements();
+    public List<Reimbursement> getAllReimbursements(String user, String role) {
+        try {
+            if(role.equals("EMPLOYEE")){
+            List<Reimbursement> empArr = new ArrayList<>();
+            empArr.addAll(reimbursementDao.getReimbursementByAuthor(user));
+            return empArr;
+        } else {
+            return reimbursementDao.getAllReimbursements();
+        }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 
     public Reimbursement getReimbursementById(String id) {

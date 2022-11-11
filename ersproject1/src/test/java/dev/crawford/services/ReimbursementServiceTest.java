@@ -52,17 +52,17 @@ public class ReimbursementServiceTest {
     @Test
     @Order(2)
     void testGetAllReimbursements() {
-        assertEquals(newReimbursement.getAmount(), reimbursementService.getAllReimbursements().get(0).getAmount());
-        assertEquals(newReimbursement.getType(), reimbursementService.getAllReimbursements().get(0).getType());
+        assertEquals(newReimbursement.getAmount(), reimbursementService.getAllReimbursements("email5@email.com", "MANAGER").get(0).getAmount());
+        assertEquals(newReimbursement.getType(), reimbursementService.getAllReimbursements("email5@email.com", "MANAGER").get(0).getType());
         assertEquals(newReimbursement.getDescription(),
-                reimbursementService.getAllReimbursements().get(0).getDescription());
-        assertEquals(newReimbursement.getStatus(), reimbursementService.getAllReimbursements().get(0).getStatus());
+                reimbursementService.getAllReimbursements("email5@email.com", "MANAGER").get(0).getDescription());
+        assertEquals(newReimbursement.getStatus(), reimbursementService.getAllReimbursements("email5@email.com", "MANAGER").get(0).getStatus());
     }
 
     @Test
     @Order(3)
     void testUpdateReimbursement() {
-        String idCheck = String.valueOf(reimbursementService.getAllReimbursements().get(0).getId());
+        String idCheck = String.valueOf(reimbursementService.getAllReimbursements("email5@email.com", "MANAGER").get(0).getId());
         newReimbursement.setAmount(15.15);
         ;
         newReimbursement.setDescription("New Description");
@@ -70,13 +70,13 @@ public class ReimbursementServiceTest {
         newReimbursement.setStatus(ReimbursementStatus.APPROVED);
         assertNotEquals(
                 newReimbursement.getStatus(),
-                reimbursementService.getAllReimbursements().get(0).getStatus());
+                reimbursementService.getAllReimbursements("email5@email.com", "MANAGER").get(0).getStatus());
         reimbursementService.updateReimbursement(idCheck, newReimbursement, "email5@email.com");
-        assertEquals(newReimbursement.getAmount(), reimbursementService.getAllReimbursements().get(0).getAmount());
-        assertEquals(newReimbursement.getType(), reimbursementService.getAllReimbursements().get(0).getType());
+        assertEquals(newReimbursement.getAmount(), reimbursementService.getAllReimbursements("email5@email.com", "MANAGER").get(0).getAmount());
+        assertEquals(newReimbursement.getType(), reimbursementService.getAllReimbursements("email5@email.com", "MANAGER").get(0).getType());
         assertEquals(newReimbursement.getDescription(),
-                reimbursementService.getAllReimbursements().get(0).getDescription());
-        assertEquals(newReimbursement.getStatus(), reimbursementService.getAllReimbursements().get(0).getStatus());
+                reimbursementService.getAllReimbursements("email5@email.com", "MANAGER").get(0).getDescription());
+        assertEquals(newReimbursement.getStatus(), reimbursementService.getAllReimbursements("email5@email.com", "MANAGER").get(0).getStatus());
     }
 
     @Test
@@ -84,6 +84,6 @@ public class ReimbursementServiceTest {
     public void deleteAllReimbursements() {
         reimbursementService.deleteAll();
         employeeService.deleteAll();
-        assertArrayEquals(Collections.emptyList().toArray(), reimbursementService.getAllReimbursements().toArray());
+        assertArrayEquals(Collections.emptyList().toArray(), reimbursementService.getAllReimbursements("email5@email.com", "MANAGER").toArray());
     }
 }

@@ -29,7 +29,11 @@ public class ReimbursementController {
         ctx.status(201);
     };
 
-    public final Handler getAllReimbursements = ctx -> ctx.json(reimbursementService.getAllReimbursements());
+    public final Handler getAllReimbursements = ctx -> {
+        String user = ctx.cookieStore().get("user").toString();
+        String role = ctx.cookieStore().get("role").toString();
+        ctx.json(reimbursementService.getAllReimbursements(user, role));
+    };
 
     public final Handler getReimbursementById = ctx -> ctx
             .json(reimbursementService.getReimbursementById(ctx.pathParam("id")));
